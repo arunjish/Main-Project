@@ -8,20 +8,22 @@ channel = connection.channel()
 
 channel.queue_declare(queue='rpc_queue')
 
-def fib(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        return fib(n-1) + fib(n-2)
+
+def getAction(state):   
+   action = (np.argmax(model.predict(state, batch_size=1)))
+   return action
+
 
 def on_request(ch, method, props, body):
     print(body)
     distMat= str(body).split(",")[1:-1]
     distMat=list(map(int, distMat))
     print(distMat)
-    action="1" #get action here
+
+    saved_model = 'saved-models/128-128-64-50000-25000.h5'
+    model = neural_net(NUM_SENSORS=3, [128, 128], saved_model)
+
+    action=getAction(distMat) #get action here
     response = action
 
     ch.basic_publish(exchange='',
