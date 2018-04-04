@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import pika
 import uuid
+import motorControl
 
 class FibonacciRpcClient(object):
     def __init__(self):
@@ -33,8 +34,13 @@ class FibonacciRpcClient(object):
             self.connection.process_data_events()
         return self.response
 
-fibonacci_rpc = FibonacciRpcClient()
+if __name__ == '__main__':
+    fibonacci_rpc = FibonacciRpcClient()
 
-print(" [x] Requesting fib(30)")
-response = fibonacci_rpc.call(",30,20,50,")
-print(" [.] Got %r" % response)
+    distanceMat=motorControl.getDistances()
+    print(distanceMat)
+    distanceMatstring=","+str(distanceMat[0])+","+str(distanceMat[1])+","+str(distanceMat[2])+","
+    print(distanceMatstring)
+    response = fibonacci_rpc.call(distanceMatstring)
+
+
