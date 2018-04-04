@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 import pika
+from flat_game import carmunk
+import numpy as np
+from nn import neural_net
 
 credentials = pika.PlainCredentials('the_user', 'the_pass')
 connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.43.50',5672,'/',credentials))
